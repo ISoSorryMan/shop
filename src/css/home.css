@@ -1,0 +1,72 @@
+
+
+.Main p {
+  font-size: 30px;
+}
+
+.MainPic {
+  width: 200px;
+}
+
+.about-us {
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  transform: none;
+  background-color: #598392;
+  padding: 5%;
+}
+
+
+.cards {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+.card p {
+  color: white;
+}
+
+.header-text-container {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.header-text {
+  font-size: 40px;
+  color: #598392;
+}
+
+.about-heading {
+  font-size: 30px;
+}
+
+.about-content {
+  margin-top: 15px;
+  color: #fff;
+}
+
+.cards {
+  margin-top: 20px;
+}
+
+
+
+.card h2 {
+  font-size: 20px;
+  color: black;
+}
+
+
+
+.info {
+  width: 800px;
+}
+
+.info h3 {
+  font-weight: 500;
+}
+
