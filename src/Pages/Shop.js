@@ -21,7 +21,7 @@ const ProductsPage = () => {
   const listImage = <img src={imglist} alt="List View" />;
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/items/?format=json')
+    axios.get('http://127.0.0.1:8000/api/product/?format=json')
       .then((response) => {
         setProducts(response.data);
       })
