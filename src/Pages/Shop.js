@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate'; // Додали імпорт пагінації
 import '../css/products.css';
 import imglist from '../img/list.svg';
 import imgcol from '../img/column.svg';
 
-// Решта імпортів залишаємо без змін
-
 const ProductsPage = () => {
-  // Створюємо решту станів, залишаючи старий стан viewMode
   const [products, setProducts] = useState([]);
   const [viewMode, setViewMode] = useState('grid');
-
-  // Функція для зміни стану viewMode при кліку на кнопку
-  const toggleViewMode = () => {
-    setViewMode((prevMode) => (prevMode === 'grid' ? 'list' : 'grid'));
-  };
-
-  // Змінні для зображень в залежності від режиму перегляду
-  const gridImage = <img src={imgcol} alt="Grid View" />;
-  const listImage = <img src={imglist} alt="List View" />;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [perPage] = useState(10); // Кількість продуктів на сторінці
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/product/?format=json')
@@ -30,6 +21,24 @@ const ProductsPage = () => {
       });
   }, []);
 
+  const toggleViewMode = () => {
+    setViewMode((prevMode) => (prevMode === 'grid' ? 'list' : 'grid'));
+  };
+
+  const gridImage = <img src={imgcol} alt="Grid View" />;
+  const listImage = <img src={imglist} alt="List View" />;
+
+  const pageCount = Math.ceil(products.length / perPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const productsToDisplay = products.slice(
+    currentPage * perPage,
+    (currentPage + 1) * perPage
+  );
+
   return (
     <div className="products-page">
       <h1>Товари</h1>
@@ -39,41 +48,26 @@ const ProductsPage = () => {
         </button>
       </div>
       <div className={`product-list ${viewMode}`}>
-        {products.map((product) => (
+        {productsToDisplay.map((product) => (
           <div className="product" key={product.id}>
             <img src={product.image} alt="" />
             <h2>{product.title}</h2>
             <p>Ціна: {product.price}</p>
-            <div className="product-description">
-              {product.short_desc && !product.show_full_desc ? (
-                <>
-                  <p>{product.short_desc}</p>
-                  <button
-                    onClick={() => {
-                      product.show_full_desc = true;
-                      setProducts([...products]);
-                    }}
-                  >
-                    Детальніше
-                  </button>
-                </>
-              ) : product.show_full_desc ? (
-                <>
-                  <p>{product.desc}</p>
-                  <button
-                    onClick={() => {
-                      product.show_full_desc = false;
-                      setProducts([...products]);
-                    }}
-                  >
-                    Згорнути
-                  </button>
-                </>
-              ) : null}
-            </div>
+            <p>{product.desc.length > 50 ? product.desc.substring(0, 50) + '...' : product.desc}</p>
+
           </div>
         ))}
       </div>
+      <ReactPaginate
+        previousLabel={'<'}
+        nextLabel={'>'}
+        breakLabel={'...'}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        forcePage={currentPage}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
     </div>
   );
 };
