@@ -64,3 +64,9 @@ h1 {
 .product-list.list .product p {
   text-align: center;
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
