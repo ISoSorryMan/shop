@@ -9,7 +9,7 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [viewMode, setViewMode] = useState('grid');
   const [currentPage, setCurrentPage] = useState(0);
-  const [perPage] = useState(10); // Кількість продуктів на сторінці
+  const [perPage] = useState(9); // Кількість продуктів на сторінці
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/product/?format=json')
@@ -52,7 +52,7 @@ const ProductsPage = () => {
           <div className="product" key={product.id}>
             <img src={product.image} alt="" />
             <h2>{product.title}</h2>
-            <p>Ціна: {product.price}</p>
+            <p>Ціна: {product.price}грн</p>
             <p>{product.desc.length > 50 ? product.desc.substring(0, 50) + '...' : product.desc}</p>
 
           </div>
