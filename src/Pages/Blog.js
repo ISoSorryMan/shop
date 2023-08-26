@@ -1,35 +1,33 @@
-import React from 'react';
-import '../css/blog.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const BlogPage = () => {
-  // Масив з даними блогу (приклад)
-  const blogPosts = [
-    {
-      id: 1,
-      title: 'Заголовок поста 1',
-      content: 'Тут текст поста 1...',
-    },
-    {
-      id: 2,
-      title: 'Заголовок поста 2',
-      content: 'Тут текст поста 2...',
-    },
-    // Додайте більше постів, якщо потрібно
-  ];
+const MyComponent = () => {
+  const [blog, setBlog] = useState([]);
+
+  useEffect(() => {
+    // Робимо GET-запит до API Django
+    axios.get("http://127.0.0.1:8000/api/blog/")
+      .then((response) => {
+        // Отримали дані у форматі JSON, оновлюємо стан компоненту
+        setBlog(response.data);
+      })
+      .catch((error) => {
+        console.error('Помилка при отриманні даних:', error);
+      });
+  }, []); // Другий аргумент [] вказує, що цей ефект повинен виконатися лише після монтування компоненту
 
   return (
-    <div className="blog-page">
-      <h1>Блог</h1>
-      <div className="blog-posts">
-        {blogPosts.map((post) => (
-          <div className="blog-post" key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
+    <div>
+      <ul>
+        {blog.map((blog) => (
+          <div className="blog" key={blog.id}>
+            <h2>{blog.title}</h2>
+            <p>{blog.desc}</p>
           </div>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
 
-export default BlogPage;
+export default MyComponent;
